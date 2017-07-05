@@ -1,0 +1,1 @@
+hasuractl local ssh

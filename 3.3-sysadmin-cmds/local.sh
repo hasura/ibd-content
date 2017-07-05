@@ -1,0 +1,1 @@
+export XTERM=256
