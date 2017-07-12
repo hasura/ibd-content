@@ -2,6 +2,7 @@
 Description = A simple hello world server added to the supervisor
 
 [Service]
+User = docker
 Environment = APP_PORT=8000
 ExecStart = /home/docker/Server
 Restart = always
