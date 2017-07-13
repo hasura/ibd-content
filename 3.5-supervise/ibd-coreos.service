@@ -3,8 +3,7 @@ Description = A simple hello world server added to the supervisor
 
 [Service]
 User = core
-Environment = APP_PORT=8000
-ExecStart = /home/core/Server
+ExecStart = /home/core/Server --port=8080
 Restart = always
 
 [Install]
