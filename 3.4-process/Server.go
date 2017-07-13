@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net/http"
-	"os"
 )
 
 /**
@@ -35,15 +35,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 // The entry point.
 func main() {
-	// Change this to take port as an argument and
-	// not as a env var or a hardcoded default
-	// provide a usage guideline
-	port := os.Getenv("APP_PORT")
-
-	// port is not present then set default.
-	if port == "" {
-		port = "8000"
-	}
+	portPtr := flag.String("port", "8000", "Specify the port at which server should listen. e.g. './Server --port=8080'")
+	flag.Parse()
+	port := *portPtr
 
 	http.HandleFunc("/", handler)
 	fmt.Println("Server running @ 0.0.0.0:" + port)
