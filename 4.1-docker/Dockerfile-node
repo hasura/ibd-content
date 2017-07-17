@@ -1,0 +1,4 @@
+FROM node:6-alpine
+COPY node-server.js /node-server.js
+WORKDIR /
+CMD ["/node-server.js"]
