@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 /**
@@ -23,7 +24,7 @@ func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
 /**
  * Handles the / request with the html telling what to do.
  */
-func handler(w http.ResponseWriter, r *http.Request) {
+func mainHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		errorHandler(w, r, http.StatusNotFound)
 		return
@@ -33,13 +34,30 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `<h1>Hello world</h1>`)
 }
 
+/**
+ * Handles the /pid request, responds with the current process id
+ */
+func pidHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/pid" {
+		errorHandler(w, r, http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(200)
+
+	pid := os.Getpid()
+	fmt.Fprintf(w, "%v", pid) 
+}
+
 // The entry point.
 func main() {
 	portPtr := flag.String("port", "8000", "Specify the port at which server should listen. e.g. './Server --port=8080'")
 	flag.Parse()
 	port := *portPtr
 
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/", mainHandler)
+	http.HandleFunc("/pid", pidHandler)
+
 	fmt.Println("Server running @ 0.0.0.0:" + port)
 	http.ListenAndServe(":"+port, nil)
 }
